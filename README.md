@@ -19,8 +19,11 @@ http://nbviewer.jupyter.org/github/cometscome/QM/tree/master/
 
 #### Julia言語とは
 Juliaは記述が簡単で高速な言語。行列の対角化から特殊関数まで、物理で用いる様々な計算を手軽に実行することができる。  
-試す場合には  
-https://www.juliabox.com/  
+https://julialang.org
+にそれぞれのOSのバイナリがあるので、それをダウンロードして解凍すればすぐ使える。
+
+試す場合には  
+https://www.juliabox.com/  
 を使うとブラウザ上でこれらのノートブックを試すことができる。ログインして、ファイルをアップロードすれば、実行してみることが（もちろんいじることも）できる。
 
 # Julia 1.0.0に順次対応中
