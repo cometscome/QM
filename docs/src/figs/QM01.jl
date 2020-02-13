@@ -54,11 +54,11 @@ for n in 1:N
     push!(εa,n^2*π^2/(a*(N+1))^2)
 end
 
-plot(integers[1:sn],[ε[1:sn],εa[1:sn]],label=["Numerical result","Analytical result"],marker=:circle) 
+plot(integers[1:sn],[ε[1:sn],εa[1:sn]],label=["Numerical result" "Analytical result"],marker=:circle) 
 savefig("fig03.png")
 
 sn = 1000
-plot(integers[1:sn],[ε[1:sn],εa[1:sn]],label=["Numerical result","Analytical result"],marker=:circle)
+plot(integers[1:sn],[ε[1:sn],εa[1:sn]],label=["Numerical result" "Analytical result"],marker=:circle)
 savefig("fig04.png")
 
 N = 1000
@@ -77,6 +77,6 @@ for n in 1:N
     push!(εa,n^2*π^2/(a*(N+1))^2)
 end
 
-plot(integers[1:sn],[ε[1:sn],εa[1:sn]],label=["Numerical result","Analytical result"],marker=:circle) 
+plot(integers[1:sn],[ε[1:sn],εa[1:sn]],label=["Numerical result" "Analytical result"],marker=:circle) 
 
 savefig("fig05.png")

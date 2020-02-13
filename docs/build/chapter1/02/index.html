@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>ポテンシャルがある場合の1Dシュレーディンガー方程式の解 · Juliaで学ぶ量子力学</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">Juliaで学ぶ量子力学</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Index</a></li><li><span class="tocitem">時間に依存しないシュレーディンガー方程式の解</span><ul><li><a class="tocitem" href="../01/">ポテンシャルがない場合1次元シュレーディンガー方程式を解き、その後数値的に解いてみる</a></li><li class="is-active"><a class="tocitem" href>ポテンシャルがある場合の1Dシュレーディンガー方程式の解</a><ul class="internal"><li><a class="tocitem" href="#前回のおさらい-1"><span>前回のおさらい</span></a></li><li><a class="tocitem" href="#離散化座標表示での解-1"><span>離散化座標表示での解</span></a></li></ul></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">時間に依存しないシュレーディンガー方程式の解</a></li><li class="is-active"><a href>ポテンシャルがある場合の1Dシュレーディンガー方程式の解</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>ポテンシャルがある場合の1Dシュレーディンガー方程式の解</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/cometscome/QM/blob/master/docs/src/chapter1/02.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="ポテンシャルがある場合の1Dシュレーディンガー方程式の解-1"><a class="docs-heading-anchor" href="#ポテンシャルがある場合の1Dシュレーディンガー方程式の解-1">ポテンシャルがある場合の1Dシュレーディンガー方程式の解</a><a class="docs-heading-anchor-permalink" href="#ポテンシャルがある場合の1Dシュレーディンガー方程式の解-1" title="Permalink"></a></h1><p>一次元系のシュレーディンガー方程式は、</p><div>\[\left( -\frac{\hbar^2}{2m}\frac{d^2}{dx^2} + V(x) \right) \psi(x) = \epsilon \psi(x)\]</div><p>である。 前回はポテンシャル<span>$V(x)$</span>がゼロの場合を解いたが、次はポテンシャルを入れて解いてみよう。</p><h2 id="前回のおさらい-1"><a class="docs-heading-anchor" href="#前回のおさらい-1">前回のおさらい</a><a class="docs-heading-anchor-permalink" href="#前回のおさらい-1" title="Permalink"></a></h2><p>座標を離散化すると、シュレーディンガー方程式は、</p><div>\[\sum_j \left(
+-\frac{\hbar^2}{2m} d_j + V(x_j) \delta_{ij}
+\right) \psi(x_j) = \epsilon \psi(x_i)\]</div><p>と書くことができる。   ここで、</p><div>\[\frac{d^2}{dx^2}\psi |_{x=x_i} \rightarrow \sum_j d_j \psi(x_j) \]</div><p>である。   この方程式は、先ほどと同様に行列とベクトルで表現することができて、</p><div>\[\hat{H} {\bf \psi} = \epsilon {\bf \psi}\]</div><p>となる。これがシュレーディンガー方程式の行列表示である。   ここで、<span>${\bf \psi}_n = U {\bf c}_n$</span>を使えば、</p><div>\[\hat{H} U {\bf c}_n = \epsilon U {\bf c}_n \]</div><div>\[U^+ \hat{H} U {\bf c}_n = \epsilon U^+ U {\bf c}_n \]</div><div>\[\hat{H}&#39; {\bf c}_n = \epsilon {\bf c}_n\]</div><p>となる。   ベクトルはユニタリー変換で色々変換できるので、kでもxでも好きな表示で計算できる。  </p><h2 id="離散化座標表示での解-1"><a class="docs-heading-anchor" href="#離散化座標表示での解-1">離散化座標表示での解</a><a class="docs-heading-anchor-permalink" href="#離散化座標表示での解-1" title="Permalink"></a></h2><p>　実は前回のノートのコードで対応できる。  </p><h3 id="ポテンシャルがない場合-1"><a class="docs-heading-anchor" href="#ポテンシャルがない場合-1">ポテンシャルがない場合</a><a class="docs-heading-anchor-permalink" href="#ポテンシャルがない場合-1" title="Permalink"></a></h3><p>ポテンシャルを入れる前に、波動関数がどのようになっているか見てみよう。  方程式は</p><div>\[\left( -\frac{d^2}{dx&#39;^2} + V(x&#39;) \right) \psi(x&#39;) = \epsilon \psi(x&#39;)\]</div><p>と無次元化されている。 境界条件も前回と同じ</p><div>\[ \psi(x_{-1}) = 0\]</div><div>\[ \psi(x_{N+1}) = 0\]</div><p>である。 </p><p>まず、ハミルトニアンを表す行列を以下のように用意する。</p><pre><code class="language-julia">
+  function make_H1d(N,a)
+    mat_H = zeros(Float64,N,N)
+    vec_V = zeros(Float64,N)
+        
+    for i in 1:N
+        for dx in -1:1
+            j = i + dx
+            v = 0.0
+            if dx == 0
+                v = (2/a^2 + vec_V[i])
+            elseif dx == 1
+                v = -1/a^2
+            elseif dx == -1
+                v = -1/a^2
+            end
+            
+            if 1 &lt;= j &lt;= N
+                mat_H[i,j] = v
+            end
+            
+        end
+        
+    end
+    
+    
+    return mat_H
+end</code></pre><p>最小固有値に属する波動関数を見てみよう。 まず、対角化し、</p><pre><code class="language-julia">using LinearAlgebra #対角化のルーチンeigenを呼ぶ準備 v0.7以降必要
+N = 1000
+a = 0.01
+mat_H = make_H1d(N,a)
+ε,ψ = eigen(mat_H)
+
+println(ε[1])</code></pre><pre><code class="language-none">0.09849886676979276</code></pre><p>最小固有値を得た。次に固有ベクトルをプロットしよう。固有ベクトルの要素の二乗が波動関数の二乗である。</p><pre><code class="language-none">is = 1
+println(ψ[:,is])</code></pre><pre><code class="language-none">[0.000140286, 0.00028057, 0.000420851, 0.000561129, 0.0007014, 0.000841665, 0.000981922, 0.00112217, 0.0012624, 0.00140263, 0.00154284, 0.00168303, 0.00182321, 0.00196337, 0.00210351, 0.00224363, 0.00238373, 0.0025238, 0.00266385, 0.00280387, 0.00294387, 0.00308384, 0.00322377, 0.00336368, 0.00350355, 0.00364338, 0.00378319, 0.00392295, 0.00406267, 0.00420236, 0.004342, 0.0044816, 0.00462116, 0.00476067, 0.00490014, 0.00503955, 0.00517892, 0.00531823, 0.0054575, 0.0055967, 0.00573586, 0.00587496, 0.006014, 0.00615298, 0.0062919, 0.00643075, 0.00656955, 0.00670828, 0.00684694, 0.00698554, 0.00712407, 0.00726252, 0.00740091, 0.00753922, 0.00767746, 0.00781562, 0.00795371, 0.00809172, 0.00822965, 0.00836749, 0.00850526, 0.00864294, 0.00878053, 0.00891804, 0.00905546, 0.0091928, 0.00933004, 0.00946719, 0.00960424, 0.0097412, 0.00987807, 0.0100148, 0.0101515, 0.0102881, 0.0104245, 0.0105609, 0.0106972, 0.0108333, 0.0109694, 0.0111053, 0.0112412, 0.0113769, 0.0115125, 0.011648, 0.0117834, 0.0119186, 0.0120538, 0.0121888, 0.0123237, 0.0124585, 0.0125932, 0.0127277, 0.0128621, 0.0129964, 0.0131306, 0.0132646, 0.0133985, 0.0135323, 0.0136659, 0.0137994, 0.0139328, 0.014066, 0.0141991, 0.014332, 0.0144649, 0.0145975, 0.01473, 0.0148624, 0.0149946, 0.0151267, 0.0152587, 0.0153904, 0.0155221, 0.0156536, 0.0157849, 0.0159161, 0.0160471, 0.0161779, 0.0163086, 0.0164392, 0.0165695, 0.0166997, 0.0168298, 0.0169597, 0.0170894, 0.0172189, 0.0173483, 0.0174775, 0.0176065, 0.0177354, 0.0178641, 0.0179926, 0.0181209, 0.0182491, 0.018377, 0.0185048, 0.0186324, 0.0187598, 0.0188871, 0.0190141, 0.019141, 0.0192677, 0.0193942, 0.0195205, 0.0196466, 0.0197725, 0.0198982, 0.0200237, 0.0201491, 0.0202742, 0.0203991, 0.0205238, 0.0206483, 0.0207727, 0.0208968, 0.0210207, 0.0211444, 0.0212679, 0.0213912, 0.0215142, 0.0216371, 0.0217598, 0.0218822, 0.0220044, 0.0221264, 0.0222482, 0.0223698, 0.0224911, 0.0226122, 0.0227331, 0.0228538, 0.0229742, 0.0230945, 0.0232145, 0.0233342, 0.0234538, 0.0235731, 0.0236922, 0.023811, 0.0239296, 0.024048, 0.0241661, 0.024284, 0.0244017, 0.0245191, 0.0246363, 0.0247532, 0.0248699, 0.0249863, 0.0251025, 0.0252185, 0.0253342, 0.0254496, 0.0255648, 0.0256798, 0.0257945, 0.0259089, 0.0260231, 0.026137, 0.0262507, 0.0263641, 0.0264773, 0.0265902, 0.0267028, 0.0268152, 0.0269273, 0.0270391, 0.0271507, 0.027262, 0.0273731, 0.0274838, 0.0275943, 0.0277046, 0.0278145, 0.0279242, 0.0280336, 0.0281427, 0.0282516, 0.0283601, 0.0284684, 0.0285765, 0.0286842, 0.0287916, 0.0288988, 0.0290057, 0.0291123, 0.0292186, 0.0293246, 0.0294303, 0.0295358, 0.0296409, 0.0297458, 0.0298504, 0.0299546, 0.0300586, 0.0301623, 0.0302657, 0.0303688, 0.0304715, 0.030574, 0.0306762, 0.0307781, 0.0308797, 0.030981, 0.0310819, 0.0311826, 0.0312829, 0.031383, 0.0314827, 0.0315822, 0.0316813, 0.0317801, 0.0318786, 0.0319768, 0.0320746, 0.0321722, 0.0322694, 0.0323663, 0.0324629, 0.0325592, 0.0326552, 0.0327508, 0.0328461, 0.0329411, 0.0330358, 0.0331301, 0.0332241, 0.0333178, 0.0334111, 0.0335042, 0.0335969, 0.0336892, 0.0337813, 0.033873, 0.0339643, 0.0340554, 0.0341461, 0.0342364, 0.0343264, 0.0344161, 0.0345055, 0.0345945, 0.0346832, 0.0347715, 0.0348595, 0.0349471, 0.0350344, 0.0351213, 0.0352079, 0.0352942, 0.0353801, 0.0354657, 0.0355509, 0.0356357, 0.0357203, 0.0358044, 0.0358882, 0.0359717, 0.0360548, 0.0361375, 0.0362199, 0.0363019, 0.0363836, 0.0364649, 0.0365459, 0.0366265, 0.0367067, 0.0367866, 0.0368661, 0.0369452, 0.037024, 0.0371024, 0.0371805, 0.0372582, 0.0373355, 0.0374124, 0.037489, 0.0375652, 0.0376411, 0.0377166, 0.0377917, 0.0378664, 0.0379407, 0.0380147, 0.0380883, 0.0381616, 0.0382344, 0.0383069, 0.038379, 0.0384507, 0.0385221, 0.038593, 0.0386636, 0.0387338, 0.0388037, 0.0388731, 0.0389422, 0.0390108, 0.0390791, 0.039147, 0.0392146, 0.0392817, 0.0393485, 0.0394148, 0.0394808, 0.0395464, 0.0396116, 0.0396764, 0.0397408, 0.0398048, 0.0398684, 0.0399317, 0.0399945, 0.040057, 0.040119, 0.0401807, 0.0402419, 0.0403028, 0.0403633, 0.0404233, 0.040483, 0.0405423, 0.0406012, 0.0406597, 0.0407177, 0.0407754, 0.0408327, 0.0408896, 0.040946, 0.0410021, 0.0410577, 0.041113, 0.0411679, 0.0412223, 0.0412763, 0.04133, 0.0413832, 0.041436, 0.0414884, 0.0415404, 0.041592, 0.0416432, 0.041694, 0.0417444, 0.0417943, 0.0418438, 0.041893, 0.0419417, 0.04199, 0.0420379, 0.0420854, 0.0421324, 0.0421791, 0.0422253, 0.0422711, 0.0423165, 0.0423615, 0.042406, 0.0424502, 0.0424939, 0.0425372, 0.0425801, 0.0426226, 0.0426646, 0.0427063, 0.0427475, 0.0427883, 0.0428286, 0.0428686, 0.0429081, 0.0429472, 0.0429859, 0.0430241, 0.043062, 0.0430994, 0.0431363, 0.0431729, 0.043209, 0.0432447, 0.04328, 0.0433149, 0.0433493, 0.0433833, 0.0434169, 0.04345, 0.0434827, 0.043515, 0.0435469, 0.0435783, 0.0436093, 0.0436399, 0.04367, 0.0436997, 0.043729, 0.0437579, 0.0437863, 0.0438143, 0.0438418, 0.043869, 0.0438957, 0.0439219, 0.0439478, 0.0439731, 0.0439981, 0.0440226, 0.0440467, 0.0440704, 0.0440936, 0.0441164, 0.0441388, 0.0441607, 0.0441822, 0.0442032, 0.0442239, 0.044244, 0.0442638, 0.0442831, 0.044302, 0.0443204, 0.0443384, 0.044356, 0.0443731, 0.0443898, 0.0444061, 0.0444219, 0.0444372, 0.0444522, 0.0444667, 0.0444808, 0.0444944, 0.0445076, 0.0445203, 0.0445326, 0.0445445, 0.0445559, 0.0445669, 0.0445775, 0.0445876, 0.0445973, 0.0446065, 0.0446153, 0.0446237, 0.0446316, 0.0446391, 0.0446461, 0.0446527, 0.0446589, 0.0446646, 0.0446699, 0.0446747, 0.0446791, 0.0446831, 0.0446866, 0.0446897, 0.0446924, 0.0446946, 0.0446963, 0.0446976, 0.0446985, 0.044699, 0.044699, 0.0446985, 0.0446976, 0.0446963, 0.0446946, 0.0446924, 0.0446897, 0.0446866, 0.0446831, 0.0446791, 0.0446747, 0.0446699, 0.0446646, 0.0446589, 0.0446527, 0.0446461, 0.0446391, 0.0446316, 0.0446237, 0.0446153, 0.0446065, 0.0445973, 0.0445876, 0.0445775, 0.0445669, 0.0445559, 0.0445445, 0.0445326, 0.0445203, 0.0445076, 0.0444944, 0.0444808, 0.0444667, 0.0444522, 0.0444372, 0.0444219, 0.0444061, 0.0443898, 0.0443731, 0.044356, 0.0443384, 0.0443204, 0.044302, 0.0442831, 0.0442638, 0.044244, 0.0442239, 0.0442032, 0.0441822, 0.0441607, 0.0441388, 0.0441164, 0.0440936, 0.0440704, 0.0440467, 0.0440226, 0.0439981, 0.0439731, 0.0439478, 0.0439219, 0.0438957, 0.043869, 0.0438418, 0.0438143, 0.0437863, 0.0437579, 0.043729, 0.0436997, 0.04367, 0.0436399, 0.0436093, 0.0435783, 0.0435469, 0.043515, 0.0434827, 0.04345, 0.0434169, 0.0433833, 0.0433493, 0.0433149, 0.04328, 0.0432447, 0.043209, 0.0431729, 0.0431363, 0.0430994, 0.043062, 0.0430241, 0.0429859, 0.0429472, 0.0429081, 0.0428686, 0.0428286, 0.0427883, 0.0427475, 0.0427063, 0.0426646, 0.0426226, 0.0425801, 0.0425372, 0.0424939, 0.0424502, 0.042406, 0.0423615, 0.0423165, 0.0422711, 0.0422253, 0.0421791, 0.0421324, 0.0420854, 0.0420379, 0.04199, 0.0419417, 0.041893, 0.0418438, 0.0417943, 0.0417444, 0.041694, 0.0416432, 0.041592, 0.0415404, 0.0414884, 0.041436, 0.0413832, 0.04133, 0.0412763, 0.0412223, 0.0411679, 0.041113, 0.0410577, 0.0410021, 0.040946, 0.0408896, 0.0408327, 0.0407754, 0.0407177, 0.0406597, 0.0406012, 0.0405423, 0.040483, 0.0404233, 0.0403633, 0.0403028, 0.0402419, 0.0401807, 0.040119, 0.040057, 0.0399945, 0.0399317, 0.0398684, 0.0398048, 0.0397408, 0.0396764, 0.0396116, 0.0395464, 0.0394808, 0.0394148, 0.0393485, 0.0392817, 0.0392146, 0.039147, 0.0390791, 0.0390108, 0.0389422, 0.0388731, 0.0388037, 0.0387338, 0.0386636, 0.038593, 0.0385221, 0.0384507, 0.038379, 0.0383069, 0.0382344, 0.0381616, 0.0380883, 0.0380147, 0.0379407, 0.0378664, 0.0377917, 0.0377166, 0.0376411, 0.0375652, 0.037489, 0.0374124, 0.0373355, 0.0372582, 0.0371805, 0.0371024, 0.037024, 0.0369452, 0.0368661, 0.0367866, 0.0367067, 0.0366265, 0.0365459, 0.0364649, 0.0363836, 0.0363019, 0.0362199, 0.0361375, 0.0360548, 0.0359717, 0.0358882, 0.0358044, 0.0357203, 0.0356357, 0.0355509, 0.0354657, 0.0353801, 0.0352942, 0.0352079, 0.0351213, 0.0350344, 0.0349471, 0.0348595, 0.0347715, 0.0346832, 0.0345945, 0.0345055, 0.0344161, 0.0343264, 0.0342364, 0.0341461, 0.0340554, 0.0339643, 0.033873, 0.0337813, 0.0336892, 0.0335969, 0.0335042, 0.0334111, 0.0333178, 0.0332241, 0.0331301, 0.0330358, 0.0329411, 0.0328461, 0.0327508, 0.0326552, 0.0325592, 0.0324629, 0.0323663, 0.0322694, 0.0321722, 0.0320746, 0.0319768, 0.0318786, 0.0317801, 0.0316813, 0.0315822, 0.0314827, 0.031383, 0.0312829, 0.0311826, 0.0310819, 0.030981, 0.0308797, 0.0307781, 0.0306762, 0.030574, 0.0304715, 0.0303688, 0.0302657, 0.0301623, 0.0300586, 0.0299546, 0.0298504, 0.0297458, 0.0296409, 0.0295358, 0.0294303, 0.0293246, 0.0292186, 0.0291123, 0.0290057, 0.0288988, 0.0287916, 0.0286842, 0.0285765, 0.0284684, 0.0283601, 0.0282516, 0.0281427, 0.0280336, 0.0279242, 0.0278145, 0.0277046, 0.0275943, 0.0274838, 0.0273731, 0.027262, 0.0271507, 0.0270391, 0.0269273, 0.0268152, 0.0267028, 0.0265902, 0.0264773, 0.0263641, 0.0262507, 0.026137, 0.0260231, 0.0259089, 0.0257945, 0.0256798, 0.0255648, 0.0254496, 0.0253342, 0.0252185, 0.0251025, 0.0249863, 0.0248699, 0.0247532, 0.0246363, 0.0245191, 0.0244017, 0.024284, 0.0241661, 0.024048, 0.0239296, 0.023811, 0.0236922, 0.0235731, 0.0234538, 0.0233342, 0.0232145, 0.0230945, 0.0229742, 0.0228538, 0.0227331, 0.0226122, 0.0224911, 0.0223698, 0.0222482, 0.0221264, 0.0220044, 0.0218822, 0.0217598, 0.0216371, 0.0215142, 0.0213912, 0.0212679, 0.0211444, 0.0210207, 0.0208968, 0.0207727, 0.0206483, 0.0205238, 0.0203991, 0.0202742, 0.0201491, 0.0200237, 0.0198982, 0.0197725, 0.0196466, 0.0195205, 0.0193942, 0.0192677, 0.019141, 0.0190141, 0.0188871, 0.0187598, 0.0186324, 0.0185048, 0.018377, 0.0182491, 0.0181209, 0.0179926, 0.0178641, 0.0177354, 0.0176065, 0.0174775, 0.0173483, 0.0172189, 0.0170894, 0.0169597, 0.0168298, 0.0166997, 0.0165695, 0.0164392, 0.0163086, 0.0161779, 0.0160471, 0.0159161, 0.0157849, 0.0156536, 0.0155221, 0.0153904, 0.0152587, 0.0151267, 0.0149946, 0.0148624, 0.01473, 0.0145975, 0.0144649, 0.014332, 0.0141991, 0.014066, 0.0139328, 0.0137994, 0.0136659, 0.0135323, 0.0133985, 0.0132646, 0.0131306, 0.0129964, 0.0128621, 0.0127277, 0.0125932, 0.0124585, 0.0123237, 0.0121888, 0.0120538, 0.0119186, 0.0117834, 0.011648, 0.0115125, 0.0113769, 0.0112412, 0.0111053, 0.0109694, 0.0108333, 0.0106972, 0.0105609, 0.0104245, 0.0102881, 0.0101515, 0.0100148, 0.00987807, 0.0097412, 0.00960424, 0.00946719, 0.00933004, 0.0091928, 0.00905546, 0.00891804, 0.00878053, 0.00864294, 0.00850526, 0.00836749, 0.00822965, 0.00809172, 0.00795371, 0.00781562, 0.00767746, 0.00753922, 0.00740091, 0.00726252, 0.00712407, 0.00698554, 0.00684694, 0.00670828, 0.00656955, 0.00643075, 0.0062919, 0.00615298, 0.006014, 0.00587496, 0.00573586, 0.0055967, 0.0054575, 0.00531823, 0.00517892, 0.00503955, 0.00490014, 0.00476067, 0.00462116, 0.0044816, 0.004342, 0.00420236, 0.00406267, 0.00392295, 0.00378319, 0.00364338, 0.00350355, 0.00336368, 0.00322377, 0.00308384, 0.00294387, 0.00280387, 0.00266385, 0.0025238, 0.00238373, 0.00224363, 0.00210351, 0.00196337, 0.00182321, 0.00168303, 0.00154284, 0.00140263, 0.0012624, 0.00112217, 0.000981922, 0.000841665, 0.0007014, 0.000561129, 0.000420851, 0.00028057, 0.000140286]</code></pre><pre><code class="language-julia">using Plots
+gr()</code></pre><pre><code class="language-julia">xaxis = Int64[]
+for i in 1:N
+    push!(xaxis,i)
+end
+
+is = 1
+plot(xaxis[1:N],ψ[1:N,is],label=&quot;Eigenfunction&quot;) </code></pre><p><img src="../../figs/fig02_1.png" alt="fig1"/> </p><p>見てわかるように、前回解いた時に得られた</p><div>\[\psi(x) = 2 i C_1 \sin  \frac{\pi}{L} x\]</div><p>と等しい。ここで、<span>$L = (N+1)*a$</span>である（境界条件をみよ）。 プロットすると、</p><p><img src="../../figs/fig02_2.png" alt="fig1"/> </p><p>あれ、値がずれてしまった。これは、シュレーディンガー方程式の解は定数倍も解であるためである。   数値的に得られた解は</p><pre><code class="language-julia">sum(dot(ψ[1:N,is],ψ[1:N,is]))</code></pre><pre><code class="language-none">0.9999999999999992</code></pre><p>内積をとると1に規格化されている。この内積は全空間での粒子を見出す確率であるので、まさに規格化条件となっている。   解析解の方も規格化を行うと、</p><pre><code class="language-julia">aψ = zeros(Float64,N)
+for i in 1:N
+    xi = i*a
+    aψ[i] = sin(xi*π/((N+1)*a))
+end
+C = sum(dot(aψ[1:N],aψ[1:N]))
+aψ = aψ/sqrt(C)
+is = 1
+plot(xaxis[1:N],[ψ[1:N,is],aψ[1:N]],label=[&quot;Numerical result&quot;,&quot;Analytical result&quot;]) </code></pre><p><img src="../../figs/fig02_3.png" alt="fig1"/> </p><p>となり、完全に一致する。</p><p>ポテンシャルがない場合の解を、複数描くと、</p><p><img src="../../figs/fig02_4.png" alt="fig1"/> </p><p>どれもsin関数である。</p><h3 id="ポテンシャルがある場合-1"><a class="docs-heading-anchor" href="#ポテンシャルがある場合-1">ポテンシャルがある場合</a><a class="docs-heading-anchor-permalink" href="#ポテンシャルがある場合-1" title="Permalink"></a></h3><p>ポテンシャルがある場合を考えよう。まず、ポテンシャルを定義する。</p><pre><code class="language-julia">function calc_V(N,V0)
+    vec_V = zeros(Float64,N)
+    dx = N/6
+    for i in 1:N
+        if N/2 - dx &lt;= i &lt;= N/2 + dx
+            vec_V[i] = V0
+        end
+    end
+    return vec_V
+end</code></pre><p>ここでは、<span>$N/2 - dx \le i \le N/2 + dx$</span>の範囲にポテンシャル<span>$V0$</span>があることにした。</p><pre><code class="language-julia">xaxis = Int64[]
+for i in 1:N
+    push!(xaxis,i)
+end
+
+V0=1.0
+vec_V = calc_V(N,V0)
+plot(xaxis[1:N],vec_V[1:N],label=&quot;Potential&quot;) </code></pre><p><img src="../../figs/fig02_5.png" alt="fig1"/> </p><p>このポテンシャルがある場合の最小固有値とその固有関数を見てみよう。   そのために、ハミルトニアンを定義する。</p><pre><code class="language-julia">function make_H1dv(N,a,V0)
+    mat_H = zeros(Float64,N,N)
+    vec_V = calc_V(N,V0)
+        
+    for i in 1:N
+        for dx in -1:1
+            j = i + dx
+            v = 0.0
+            if dx == 0
+                v = (2/a^2 + vec_V[i])
+            elseif dx == 1
+                v = -1/a^2
+            elseif dx == -1
+                v = -1/a^2
+            end
+            
+            if 1 &lt;= j &lt;= N
+                mat_H[i,j] = v
+            end
+            
+        end
+        
+    end
+    
+    
+    return mat_H
+end</code></pre><pre><code class="language-julia">N = 1000
+a = 0.01
+V0 = 1.0
+mat_H = make_H1dv(N,a,V0)
+ε,ψ = eigen(mat_H)
+
+println(ε[1])
+is = 1
+plot(xaxis[1:N],ψ[1:N,is],label=&quot;Eigenfunction&quot;) </code></pre><pre><code class="language-none">0.47212647457743806</code></pre><p><img src="../../figs/fig02_6.png" alt="fig1"/> </p><p>ポテンシャルによって、波動関数が凹んでいることがわかる。当然、その二乗である存在確率も低くなっている。   次に、ポテンシャルの強度を変えてみよう。</p><pre><code class="language-julia">N = 1000
+a = 0.01
+function gs1(N,a)
+    groundstates = []
+    labels = []
+    for v in 1:10
+        V0 = v*0.5
+        mat_H = make_H1dv(N,a,V0)
+        ε,ψ = eigen(mat_H)
+        println(&quot;Potential = &quot;,V0,&quot; Minimum eigenvalue = &quot;,ε[1])
+        push!(groundstates,ψ[:,1])
+        if v == 1
+            labels = [string(V0)]
+        else
+            labels = [labels string(V0)]
+        end
+        #push!(labels,string(V0))
+    end   
+    return groundstates,labels
+end
+groundstates,labels = gs1(N,a)</code></pre><pre><code class="language-none">Potential = 0.5 Minimum eigenvalue = 0.3406271439458158
+Potential = 1.0 Minimum eigenvalue = 0.47212647457743806
+Potential = 1.5 Minimum eigenvalue = 0.542094653793089
+Potential = 2.0 Minimum eigenvalue = 0.5841549613399831
+Potential = 2.5 Minimum eigenvalue = 0.6125251020397613
+Potential = 3.0 Minimum eigenvalue = 0.6332641494769529
+Potential = 3.5 Minimum eigenvalue = 0.6493089489080786
+Potential = 4.0 Minimum eigenvalue = 0.662273059034554
+Potential = 4.5 Minimum eigenvalue = 0.6730976630913431
+Potential = 5.0 Minimum eigenvalue = 0.682351937176906</code></pre><p>対角化できたので、プロットしてみる。</p><pre><code class="language-julia">plot(xaxis[1:N],groundstates,label=labels) </code></pre><p><img src="../../figs/fig02_7.png" alt="fig1"/></p><p>本来、左右対称に出るべきもののような気がするが、なぜ非対称になってしまったのだろうか？   ポテンシャルを少し変えてみる。</p><pre><code class="language-julia">function calc_V(N,V0)
+    vec_V = zeros(Float64,N)
+    dx = N/6
+    center = (N+1)/2
+    for i in 1:N
+        if center - dx &lt;= i &lt;= center + dx
+            vec_V[i] = V0
+        end
+    end
+    return vec_V
+end</code></pre><pre><code class="language-julia">N = 1000
+a = 0.01
+V0 = 5.0
+mat_H = make_H1dv(N,a,V0)
+ε,ψ = eigen(mat_H)
+
+println(ε[1])
+is = 1
+plot(xaxis[1:N],ψ[1:N,is],label=&quot;Eigenfunction&quot;) </code></pre><pre><code class="language-none">0.905155534659135</code></pre><p><img src="../../figs/fig02_8.png" alt="fig1"/></p><p>ほとんど左右対称になった。しかし、このくらいの微小なちがいでなぜこんなに変化してしまったのだろうか。   その謎は、<span>$a$</span>の大きさにある。ポテンシャルをもとの定義にして、<span>$a$</span>の大きさを半分にしてみよう。</p><pre><code class="language-julia">function calc_V(N,V0)
+    vec_V = zeros(Float64,N)
+    dx = N/6
+    center = (N)/2
+    for i in 1:N
+        if center - dx &lt;= i &lt;= center + dx
+            vec_V[i] = V0
+        end
+    end
+    return vec_V
+end</code></pre><pre><code class="language-julia">N = 1000
+a = 0.01
+V0 = 5.0
+mat_H = make_H1dv(N,a,V0)
+ε,ψ = eigen(mat_H)
+println(ε[1])
+plot(xaxis[1:N],ψ[1:N,1],label=&quot;a=0.01&quot;) </code></pre><pre><code class="language-none">0.682351937176906</code></pre><p><img src="../../figs/fig02_9.png" alt="fig1"/></p><pre><code class="language-julia">N = 1000*2
+xaxis = Int64[]
+for i in 1:N
+    push!(xaxis,i)
+end
+
+
+a = 0.01/2
+V0 = 5.0
+mat_H = make_H1dv(N,a,V0)
+println(ε[1])
+ε,ψ = eigen(mat_H)
+plot(xaxis[1:N],ψ[1:N,1],label=&quot;a=0.005&quot;) </code></pre><pre><code class="language-none">0.682351937176906</code></pre><p><img src="../../figs/fig02_10.png" alt="fig1"/></p><p>みてわかるように、<span>$a$</span>の大きさを小さくすると左右の均衡が少し改善された。   つまり、数値計算上のエラーであることがわかる。<span>$a$</span>が小さくなればさらに改善されるだろう。  矩形ポテンシャルをきちんと中心においた場合<span>$center = (L+1)/2$</span>であれば、改善される。 このような違いは、矩形のポテンシャルに不連続な変化があるからである。いま、差分化している微分演算子の精度が悪いのである。   これを確認するために、ポテンシャルの形状をなだらかにしてみよう。</p><pre><code class="language-julia">function calc_V(N,V0)
+    vec_V = zeros(Float64,N)
+    dx = N/6
+    center = (N)/2
+    for i in 1:N
+        vec_V[i] = V0*exp(-(i-center)^2/(dx^2))
+    end
+    return vec_V
+end
+
+N = 1000
+xaxis = Int64[]
+for i in 1:N
+    push!(xaxis,i)
+end
+
+V0=1.0
+vec_V = calc_V(N,V0)
+plot(xaxis[1:N],vec_V[1:N],label=&quot;Potential&quot;) </code></pre><p><img src="../../figs/fig02_11.png" alt="fig1"/></p><p>ポテンシャルを、上のようにガウス関数にした。このとき、最小固有値の固有関数は</p><pre><code class="language-julia">N = 1000
+a = 0.01
+function gs2(N,a)
+    groundstates = []
+    labels = []
+    for v in 1:10
+        V0 = v*0.5
+        mat_H = make_H1dv(N,a,V0)
+        ε,ψ = eigen(mat_H)
+        println(&quot;Potential = &quot;,V0,&quot; Minimum eigenvalue = &quot;,ε[1])
+        push!(groundstates,ψ[:,1])
+        if v == 1
+            labels = [string(V0)]
+        else
+            labels = [labels string(V0)]
+        end
+    end    
+    return groundstates,labels
+end
+groundstates,labels = gs2(N,a)</code></pre><pre><code class="language-none">Potential = 0.5 Minimum eigenvalue = 0.3216661503241833
+Potential = 1.0 Minimum eigenvalue = 0.47496666834409224
+Potential = 1.5 Minimum eigenvalue = 0.5787666683372826
+Potential = 2.0 Minimum eigenvalue = 0.6538526217544764
+Potential = 2.5 Minimum eigenvalue = 0.7124623403946451
+Potential = 3.0 Minimum eigenvalue = 0.7609213437478689
+Potential = 3.5 Minimum eigenvalue = 0.8025976518969778
+Potential = 4.0 Minimum eigenvalue = 0.83945543554293
+Potential = 4.5 Minimum eigenvalue = 0.8727520445958912
+Potential = 5.0 Minimum eigenvalue = 0.9033145515618101</code></pre><pre><code class="language-julia">plot(xaxis[1:N],groundstates,label=labels) </code></pre><p><img src="../../figs/fig02_12.png" alt="fig1"/></p><p>先ほどよりもましになったが、相変わらず<span>$V0=5$</span>では、左右対称が崩れてしまっている。これは、ポテンシャルの変化が急激すぎることに起因している。最後に、ポテンシャルの中心を厳密に系の中心とおくと</p><pre><code class="language-julia">function calc_V(N,V0)
+    vec_V = zeros(Float64,N)
+    dx = N/6
+    center = (N+1)/2
+    for i in 1:N
+        vec_V[i] = V0*exp(-(i-center)^2/(dx^2))
+    end
+    return vec_V
+end
+</code></pre><pre><code class="language-julia">N = 1000
+a = 0.01
+function gs3(N,a)
+    groundstates = []
+    labels = []
+    for v in 1:10
+        V0 = v*0.5
+        mat_H = make_H1dv(N,a,V0)
+        ε,ψ = eigen(mat_H)
+        println(&quot;Potential = &quot;,V0,&quot; Minimum eigenvalue = &quot;,ε[1])
+        push!(groundstates,ψ[:,1])
+        if v == 1
+            labels = [string(V0)]
+        else
+            labels = [labels string(V0)]
+        end
+    end    
+    return groundstates,labels
+end
+groundstates,labels = gs3(N,a)</code></pre><pre><code class="language-none">Potential = 0.5 Minimum eigenvalue = 0.3216680437594529
+Potential = 1.0 Minimum eigenvalue = 0.47497702625749055
+Potential = 1.5 Minimum eigenvalue = 0.5788014430373154
+Potential = 2.0 Minimum eigenvalue = 0.6539436690715744
+Potential = 2.5 Minimum eigenvalue = 0.7126667576418749
+Potential = 3.0 Minimum eigenvalue = 0.7613285627430311
+Potential = 3.5 Minimum eigenvalue = 0.8033158575112843
+Potential = 4.0 Minimum eigenvalue = 0.8405613523837149
+Potential = 4.5 Minimum eigenvalue = 0.8742498997697548
+Potential = 5.0 Minimum eigenvalue = 0.905155534659135
+</code></pre><pre><code class="language-julia">plot(xaxis[1:N],groundstates,label=labels) </code></pre><p><img src="../../figs/fig02_13.png" alt="fig1"/></p><p>きれいに左右対称になった。このことから、厳密に左右対称なものが欲しい場合には、数値計算でもきちんと左右対称にすべきであることがわかる。</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../01/">« ポテンシャルがない場合1次元シュレーディンガー方程式を解き、その後数値的に解いてみる</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Thursday 13 February 2020 22:46">Thursday 13 February 2020</span>. Using Julia version 1.3.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
